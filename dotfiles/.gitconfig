@@ -1,0 +1,7 @@
+[user]
+	name = Lydia Scarf
+	email = lscarf@azavea.com
+[core]
+	editor = vi
+[init]
+	defaultBranch = main

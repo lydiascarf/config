@@ -1,0 +1,46 @@
+diff --git a/shell-mommy.sh b/shell-mommy.sh
+index 44c1b52..16baa0b 100644
+--- a/shell-mommy.sh
++++ b/shell-mommy.sh
+@@ -2,6 +2,8 @@
+ # sudofox/shell-mommy.sh
+ 
+ mommy() {
++  RD_NUMBER=$RANDOM
++  SHELL_MOMMYS_ONLY_NEGATIVE="true"
+   MOMMY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+ 
+   # SHELL_MOMMYS_LITTLE - what to call you~ (default: "girl")
+@@ -87,17 +89,18 @@ mommy() {
+   
+   # split a string on forward slashes and return a random element
+   pick_word() {
+-    IFS='/' read -ra words <<<"$1"
+-    index=$(($RANDOM % ${#words[@]}))
+-    echo "${words[$index]}"
++    raw=$1
++    words=(${(@s:/:)raw})
++    index=$(($RD_NUMBER % ${#words[@]}))
++    echo "${words[$index + 1]}"
+   }
+ 
+   pick_response() { # given a response type, pick an entry from the array
+ 
+-    if [ "$1" == "positive" ]; then
++    if [[ "$1" == "positive" ]]; then
+       index=$(($RANDOM % ${#POSITIVE_RESPONSES[@]}))
+       element=${POSITIVE_RESPONSES[$index]}
+-    elif [ "$1" == "negative" ]; then
++    elif [[ "$1" == "negative" ]]; then
+       index=$(($RANDOM % ${#NEGATIVE_RESPONSES[@]}))
+       element=${NEGATIVE_RESPONSES[$index]}
+     else
+@@ -128,7 +131,7 @@ mommy() {
+   success() {
+     (
+       # if we're only supposed to show negative responses, return
+-      if [ "$DEF_ONLY_NEGATIVE" == "true" ]; then
++      if [[ "$DEF_ONLY_NEGATIVE" == "true" ]]; then
+         return 0
+       fi
+       # pick_response for the response type
